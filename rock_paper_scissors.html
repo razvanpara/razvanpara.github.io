@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Rock Paper Scissors Game
+	</title>
+	<script type="text/javascript" src="./scripts/game_script.js"></script>
+	<link rel="stylesheet" href="./styles/main.css"/>
+</head>
+<body>
+	<div>
+		<div>
+			<h1> Make your choice!</h1>
+			<ul>
+				<li><button class="choice" value="0.33" onclick="startGame(event)">Rock</button></li>
+				<li><button class="choice" value="0.66" onclick="startGame(event)">Paper</button></li>
+				<li><button class="choice" value="0.67" onclick="startGame(event)">Scissors</button></li>
+			</ul>
+		</div>
+		<div>
+			<p><span>Your choice: </span><span id="userChoice">...</span></p>
+			<p><span>Computer's choice: </span><span id="computerChoice">...</span></p>
+			<p><span id="message"></span><p>
+		</div>
+	</div>
+</body>
+</html>
