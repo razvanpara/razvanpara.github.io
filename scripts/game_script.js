@@ -33,15 +33,15 @@ function getChoice(d)
 function compareChoices(user, computer){
 	if(user === computer)
 	{ 
-		return "Tie!";
+		return "<span style='color:orange'>Tie!</span>";
 	}
 	else if((user === "Rock" && computer === "Scissors")  ||
 		    (user === "Scissors" && computer === "Paper") ||
 			(user === "Paper" && computer === "Rock"))
 	{
-		return "You win!";
+		return "<span style='color:green'>You win!</span>";
 	}else
 	{
-		return "Computer wins!";
+		return "<span style='color:red'>Computer wins!</span>";
 	}	
 }
