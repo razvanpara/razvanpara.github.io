@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Text to binary | Binary to text</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+    <script src="js/baseConvertors.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="mt-3">
+            <a href="../index.html" class="btn btn-info">Back</a>
+        </div>
+        <h1 class="text-center">Text to binary | Viceversa</h1>
+        <hr />
+        <div>
+            <div class="form-group">
+                <label class="col-form-label">Text:</label>
+                <textarea id="text" type="text" class="form-control"></textarea>
+                <button class="btn btn-success btn-sm mt-1" onclick="convert(event,'text','binary','1')">Text to
+                    binary</button>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label">Binary:</label>
+                <textarea id="binary" type="text" class="form-control"></textarea>
+                <button class="btn btn-success btn-sm mt-1" onclick="convert(event,'binary','text','2')">Binary to
+                    text</button>
+            </div>
+        </div>
+        <hr />
+        <div>
+            <div class="form-group">
+                <table>
+                    <tr>
+                        <td>From</td>
+                        <td>To</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select class="custom-select" id='from'
+                                onchange="reset(event)">
+                                <option value=" 2">Base 2</option>
+                                <option value="3">Base 3</option>
+                                <option value="4">Base 4</option>
+                                <option value="5">Base 5</option>
+                                <option value="6">Base 6</option>
+                                <option value="7">Base 7</option>
+                                <option value="8">Base 8</option>
+                                <option value="9">Base 9</option>
+                                <option value="10" selected='true'>Base 10</option>
+                                <option value="11">Base 11</option>
+                                <option value="12">Base 12</option>
+                                <option value="13">Base 13</option>
+                                <option value="14">Base 14</option>
+                                <option value="15">Base 15</option>
+                                <option value="16">Base 16</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="custom-select" id='to'>
+                                <option value="2" selected='true'>Base 2</option>
+                                <option value="3">Base 3</option>
+                                <option value="4">Base 4</option>
+                                <option value="5">Base 5</option>
+                                <option value="6">Base 6</option>
+                                <option value="7">Base 7</option>
+                                <option value="8">Base 8</option>
+                                <option value="9">Base 9</option>
+                                <option value="10">Base 10</option>
+                                <option value="11">Base 11</option>
+                                <option value="12">Base 12</option>
+                                <option value="13">Base 13</option>
+                                <option value="14">Base 14</option>
+                                <option value="15">Base 15</option>
+                                <option value="16">Base 16</option>
+                            </select>
+                        </td>
+                        <td rowspan="2">
+                            <button class="btn btn-outline-success" onclick="numberConvert(event)">Convert</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="number" class="form-control" id='toConvert' onkeyup="validateBase(event)" />
+                        </td>
+                        <td>
+                            <input class="form-control" disabled id='result' />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
