@@ -6,6 +6,14 @@ const aboveBase10digits = {
     14: 'E',
     15: 'F'
 };
+const aboveBase10values = {
+    'A': 10,
+    'B': 11,
+    'C': 12,
+    'D': 13,
+    'E': 14,
+    'F': 15
+};
 const convertToBase = (base, n, print = false) => {
     if (base <= 1 || base > 16) throw new Error(`base ${base} not allowed!`);
     let digits = [];
@@ -19,17 +27,16 @@ const convertToBase = (base, n, print = false) => {
     };
     return digits.reverse().reduce((a, c) => a + (c < 10 ? c : aboveBase10digits[c]), "");
 };
-const convertFromBase = (base, n) => n.toString().split("").map((item, index, arr) => Math.pow(base, (arr.length - 1) - index) * parseInt(item)).reduce((a, c) => a + c);
+const convertFromBase = (base, n) => n.toString().split("").map((item, index, arr) => Math.pow(base, (arr.length - 1) - index) * parseInt(item - 9 <= 0 ? item : aboveBase10values[item])).reduce((a, c) => a + c);
 const stringToCharacterCodes = str => str.split("").map(ch => ch.charCodeAt(0));
 const textToBaseArr = (text, toBase) => stringToCharacterCodes(text).map(cc => convertToBase(toBase, cc));
 const baseArrToText = (baseArr, fromBase) => baseArr.map(bcc => String.fromCharCode(convertFromBase(fromBase, bcc)));
 const collapseArrayIntoText = (arr, separator) => arr.reduce((a, c) => `${a}${separator}${c}`);
 const convert = (event, from, to) => {
-    document.getElementById("resultCopyStatus").hidden = true;
+    document.querySelectorAll("span").forEach(span => span.hidden = true);
     let sourceText = document.getElementById("text").value;
     if (sourceText != null) {
         let toTranslate = from == 99 ? sourceText : sourceText.split(" ");
-        // document.getElementById(targetId).value = collapseArrayIntoText(type == '1' ? textToBinary(toTranslate) : binaryToText(toTranslate), type == 1 ? " " : "");
         let baseFrom = parseInt(from);
         let baseTo = parseInt(to);
         document.getElementById("result").value = baseFrom == baseTo
@@ -60,7 +67,7 @@ const reset = (event) => {
 const copyToClipboard = (event) => {
     event.preventDefault();
     if (event.target.value != null && event.target.value != "") {
-        document.getElementById("resultCopyStatus").hidden = false;
+        event.target.parentElement.querySelector("span").hidden = false;
         event.target.select();
         document.execCommand('copy');
     }
