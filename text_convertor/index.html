@@ -22,17 +22,40 @@
         <h1 class="text-center">Text to binary | Viceversa</h1>
         <hr />
         <div>
-            <div class="form-group">
-                <label class="col-form-label">Text:</label>
-                <textarea id="text" type="text" class="form-control"></textarea>
-                <button class="btn btn-success btn-sm mt-1" onclick="convert(event,'text','binary','1')">Text to
-                    binary</button>
+            <div class="btn-group-vertical">
+                <div class="btn-block">
+                    <button class="btn btn-success btn-sm mt-1" style="width:150px"
+                        onclick="convert(event,'99','2')">Text to
+                        binary</button>
+                    <button class="btn btn-success btn-sm mt-1" style="width:150px"
+                        onclick="convert(event,'2','99')">Binary to
+                        Text</button>
+                </div>
+                <div class="btn-block">
+                    <button class="btn btn-success btn-sm mt-1" style="width:150px"
+                        onclick="convert(event,'99','8')">Text to
+                        Octal</button>
+                    <button class="btn btn-success btn-sm mt-1" style="width:150px"
+                        onclick="convert(event,'8','99')">Octal to
+                        Text</button>
+                </div>
+                <div class="btn-block">
+                    <button class="btn btn-success btn-sm mt-1 mb-1" style="width:150px"
+                        onclick="convert(event,'99','16')">Text to
+                        Hex</button>
+                    <button class="btn btn-success btn-sm mt-1 mb-1" style="width:150px"
+                        onclick="convert(event,'16','99')">Hex to
+                        Text</button>
+                </div>
             </div>
             <div class="form-group">
-                <label class="col-form-label">Binary:</label>
-                <textarea id="binary" type="text" class="form-control"></textarea>
-                <button class="btn btn-success btn-sm mt-1" onclick="convert(event,'binary','text','2')">Binary to
-                    text</button>
+                <label class="col-form-label">Content:</label>
+                <textarea id="text" type="text" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label">Translation:</label>
+                <textarea id="result" type="text" class="form-control" readonly oncontextmenu="copyToClipboard(event)"></textarea>
+                <span hidden style="color:green" id='resultCopyStatus'>Copied to clipboard!</span>
             </div>
         </div>
         <hr />
@@ -45,8 +68,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <select class="custom-select" id='from'
-                                onchange="reset(event)">
+                            <select class="custom-select" id='from' onchange="reset(event)">
                                 <option value=" 2">Base 2</option>
                                 <option value="3">Base 3</option>
                                 <option value="4">Base 4</option>

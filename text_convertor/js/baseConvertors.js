@@ -21,14 +21,22 @@ const convertToBase = (base, n, print = false) => {
 };
 const convertFromBase = (base, n) => n.toString().split("").map((item, index, arr) => Math.pow(base, (arr.length - 1) - index) * parseInt(item)).reduce((a, c) => a + c);
 const stringToCharacterCodes = str => str.split("").map(ch => ch.charCodeAt(0));
-const textToBinary = text => stringToCharacterCodes(text).map(cc => convertToBase(2, cc));
-const binaryToText = binaryArr => binaryArr.map(bcc => String.fromCharCode(convertFromBase(2, bcc)));
+const textToBaseArr = (text, toBase) => stringToCharacterCodes(text).map(cc => convertToBase(toBase, cc));
+const baseArrToText = (baseArr, fromBase) => baseArr.map(bcc => String.fromCharCode(convertFromBase(fromBase, bcc)));
 const collapseArrayIntoText = (arr, separator) => arr.reduce((a, c) => `${a}${separator}${c}`);
-const convert = (event, sourceId, targetId, type) => {
-    let sourceText = document.getElementById(sourceId).value;
-    let toTranslate = type == '1' ? sourceText : sourceText.split(" ");
-    if (toTranslate != null)
-        document.getElementById(targetId).value = collapseArrayIntoText(type == '1' ? textToBinary(toTranslate) : binaryToText(toTranslate), type == 1 ? " " : "");
+const convert = (event, from, to) => {
+    document.getElementById("resultCopyStatus").hidden = true;
+    let sourceText = document.getElementById("text").value;
+    if (sourceText != null) {
+        let toTranslate = from == 99 ? sourceText : sourceText.split(" ");
+        // document.getElementById(targetId).value = collapseArrayIntoText(type == '1' ? textToBinary(toTranslate) : binaryToText(toTranslate), type == 1 ? " " : "");
+        let baseFrom = parseInt(from);
+        let baseTo = parseInt(to);
+        document.getElementById("result").value = baseFrom == baseTo
+            ? sourceText
+            : from == 99 ? collapseArrayIntoText(textToBaseArr(toTranslate, baseTo), " ")
+                : collapseArrayIntoText(baseArrToText(toTranslate, baseFrom), "");
+    }
 };
 const numberConvert = (event) => {
     let resultContainer = document.getElementById('result');
@@ -49,3 +57,11 @@ const reset = (event) => {
     document.getElementById('toConvert').value = "";
     document.getElementById('result').value = "";
 };
+const copyToClipboard = (event) => {
+    event.preventDefault();
+    if (event.target.value != null && event.target.value != "") {
+        document.getElementById("resultCopyStatus").hidden = false;
+        event.target.select();
+        document.execCommand('copy');
+    }
+}
