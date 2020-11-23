@@ -36,12 +36,12 @@ const convert = (event, from, to) => {
     document.querySelectorAll("span").forEach(span => span.hidden = true);
     let sourceText = document.getElementById("text").value;
     if (sourceText != null) {
-        let toTranslate = from == 99 ? sourceText : sourceText.split(" ");
+        let toTranslate = from == 99 ? sourceText : sourceText.split(` `);
         let baseFrom = parseInt(from);
         let baseTo = parseInt(to);
-        document.getElementById("result").value = baseFrom == baseTo
+        document.getElementById("textResult").value = baseFrom == baseTo
             ? sourceText
-            : from == 99 ? collapseArrayIntoText(textToBaseArr(toTranslate, baseTo), " ")
+            : from == 99 ? collapseArrayIntoText(textToBaseArr(toTranslate, baseTo), ` `)
                 : collapseArrayIntoText(baseArrToText(toTranslate, baseFrom), "");
     }
 };
