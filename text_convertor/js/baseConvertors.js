@@ -32,16 +32,17 @@ const stringToCharacterCodes = str => str.split("").map(ch => ch.charCodeAt(0));
 const textToBaseArr = (text, toBase) => stringToCharacterCodes(text).map(cc => convertToBase(toBase, cc));
 const baseArrToText = (baseArr, fromBase) => baseArr.map(bcc => String.fromCharCode(convertFromBase(fromBase, bcc)));
 const collapseArrayIntoText = (arr, separator) => arr.reduce((a, c) => `${a}${separator}${c}`);
-const convert = (event, from, to) => {
+const convert = (event) => {
     document.querySelectorAll("span").forEach(span => span.hidden = true);
     let sourceText = document.getElementById("text").value;
+    let checkedOption = document.querySelector("input[type='radio']:checked");
     if (sourceText != null) {
-        let toTranslate = from == 99 ? sourceText : sourceText.split(` `);
-        let baseFrom = parseInt(from);
-        let baseTo = parseInt(to);
+        let baseFrom = parseInt(checkedOption.attributes['from'].value);
+        let baseTo = parseInt(checkedOption.attributes['to'].value);
+        let toTranslate = baseFrom == 99 ? sourceText : sourceText.split(` `);
         document.getElementById("textResult").value = baseFrom == baseTo
             ? sourceText
-            : from == 99 ? collapseArrayIntoText(textToBaseArr(toTranslate, baseTo), ` `)
+            : baseFrom == 99 ? collapseArrayIntoText(textToBaseArr(toTranslate, baseTo), ` `)
                 : collapseArrayIntoText(baseArrToText(toTranslate, baseFrom), "");
     }
 };
@@ -66,9 +67,12 @@ const reset = (event) => {
 };
 const copyToClipboard = (event) => {
     event.preventDefault();
-    if (event.target.value != null && event.target.value != "") {
-        event.target.parentElement.querySelector("span").hidden = false;
-        event.target.select();
+    let parent = event.target.parentElement;
+    let textArea = parent.querySelector("textarea");
+    if (textArea.value != null && textArea.value != "") {
+        parent.querySelector("span").hidden = false;
+        textArea.select();
         document.execCommand('copy');
+        event.target.focus();
     }
 }
