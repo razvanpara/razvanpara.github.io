@@ -26,47 +26,50 @@
                 <div class="btn-group-vertical" data-toggle="buttons">
                     <div class="btn-group-toggle">
                         <label class="btn btn-light btn-sm mt-1" style="width:150px">
-                            <input type="radio" name="translationType" from='99' to='2' checked>Text to binary
+                            <input type="radio" name="translationType" from='99' to='2' checked
+                                onchange="convert(event)">Text to binary
                         </label>
                         <label class="btn btn-light btn-sm mt-1" style="width:150px">
-                            <input type="radio" name="translationType" from='2' to='99'>Binary to Text
+                            <input type="radio" name="translationType" from='2' to='99' onchange="convert(event)">Binary
+                            to Text
                         </label>
                     </div>
                     <div class="btn-group-toggle">
                         <label class="btn btn-light btn-sm mt-1" style="width:150px">
-                            <input type="radio" name="translationType" from='99' to='8'>Text to Octal</label>
+                            <input type="radio" name="translationType" from='99' to='8' onchange="convert(event)">Text
+                            to Octal</label>
                         <label class="btn btn-light btn-sm mt-1" style="width:150px">
-                            <input type="radio" name="translationType" from='8' to='99'>Octal to Text</label>
+                            <input type="radio" name="translationType" from='8' to='99' onchange="convert(event)">Octal
+                            to Text</label>
                     </div>
                     <div class="btn-group-toggle">
                         <label class="btn btn-light btn-sm mt-1" style="width:150px">
-                            <input type="radio" name="translationType" from='99' to='16'>Text to Hex</label>
+                            <input type="radio" name="translationType" from='99' to='16' onchange="convert(event)">Text
+                            to Hex</label>
                         <label class="btn btn-light btn-sm mt-1" style="width:150px">
-                            <input type="radio" name="translationType" from='16' to='99'>Hex to Text</label>
+                            <input type="radio" name="translationType" from='16' to='99' onchange="convert(event)">Hex
+                            to Text</label>
                     </div>
                     <div class="btn-group-toggle">
                         <label class="btn btn-light btn-sm mt-1 mb-1" style="width:150px">
-                            <input type="radio" name="translationType" from='99' to='base64'>Text to Base64</label>
+                            <input type="radio" name="translationType" from='99' to='base64'
+                                onchange="convert(event)">Text to Base64</label>
                         <label class="btn btn-light btn-sm mt-1 mb-1" style="width:150px">
-                            <input type="radio" name="translationType" from='base64' to='99'>Base64 to Text</label>
+                            <input type="radio" name="translationType" from='base64' to='99'
+                                onchange="convert(event)">Base64 to Text</label>
                     </div>
-                </div>
-                <div>
-                    <button class="btn btn-success rounded-pill" onclick="convert(event)">Convert</button>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-form-label">Content:</label>
-                <textarea id="text" type="text" class="form-control"></textarea>
-                <button class="btn btn-sm btn-primary rounded-pill mt-1"
-                    onclick="copyToClipboard(event)">Copy</button>
+                <textarea id="text" type="text" class="form-control" onkeyup="convert(event)"></textarea>
+                <button class="btn btn-sm btn-primary rounded-pill mt-1" onclick="copyToClipboard(event)">Copy</button>
                 <span hidden style="color:green">Copied to clipboard!</span>
             </div>
             <div class="form-group">
                 <label class="col-form-label">Translation:</label>
                 <textarea id="textResult" type="text" class="form-control" readonly></textarea>
-                <button class="btn btn-sm btn-primary rounded-pill mt-1"
-                    onclick="copyToClipboard(event)">Copy</button>
+                <button class="btn btn-sm btn-primary rounded-pill mt-1" onclick="copyToClipboard(event)">Copy</button>
                 <span hidden style="color:green">Copied to clipboard!</span>
             </div>
         </div>
@@ -128,7 +131,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <button class="btn btn-success rounded-pill mt-1" onclick="numberConvert(event)">Convert</button>
+                            <button class="btn btn-success rounded-pill mt-1"
+                                onclick="numberConvert(event)">Convert</button>
                         </td>
                     </tr>
                 </table>
