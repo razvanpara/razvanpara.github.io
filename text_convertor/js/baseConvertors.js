@@ -37,8 +37,17 @@ const convert = (event) => {
     let sourceText = document.getElementById("text").value;
     let checkedOption = document.querySelector("input[type='radio']:checked");
     if (sourceText != null) {
-        let baseFrom = parseInt(checkedOption.attributes['from'].value);
-        let baseTo = parseInt(checkedOption.attributes['to'].value);
+        let from = checkedOption.attributes['from'].value;
+        let to = checkedOption.attributes['to'].value;
+        if (from == 'base64' || to == 'base64') {
+            document.getElementById("textResult").value = from == to
+                ? sourceText
+                : from == 99 ? btoa(sourceText)
+                    : atob(sourceText);
+            return;
+        }
+        let baseFrom = parseInt(from);
+        let baseTo = parseInt(to);
         let toTranslate = baseFrom == 99 ? sourceText : sourceText.split(` `);
         document.getElementById("textResult").value = baseFrom == baseTo
             ? sourceText
