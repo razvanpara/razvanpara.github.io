@@ -29,14 +29,14 @@ const convertToBase = (base, n, print = false) => {
 };
 const convertFromBase = (base, n) => n.toString().split("").map((item, index, arr) => Math.pow(base, (arr.length - 1) - index) * parseInt(item - 9 <= 0 ? item : aboveBase10values[item])).reduce((a, c) => a + c);
 const stringToCharacterCodes = str => str.split("").map(ch => ch.charCodeAt(0));
-const textToBaseArr = (text, toBase) => stringToCharacterCodes(text).map(cc => convertToBase(toBase, cc));
+const textToBaseArr = (text, toBase) => text != null && text.length > 0 ? stringToCharacterCodes(text).map(cc => convertToBase(toBase, cc)) : [];
 const baseArrToText = (baseArr, fromBase) => baseArr.map(bcc => String.fromCharCode(convertFromBase(fromBase, bcc)));
 const collapseArrayIntoText = (arr, separator) => arr.reduce((a, c) => `${a}${separator}${c}`);
 const convert = (event) => {
     document.querySelectorAll("span").forEach(span => span.hidden = true);
     let sourceText = document.getElementById("text").value;
     let checkedOption = document.querySelector("input[type='radio']:checked");
-    if (sourceText != null) {
+    if (sourceText != null && sourceText != "") {
         let from = checkedOption.attributes['from'].value;
         let to = checkedOption.attributes['to'].value;
         if (from == 'base64' || to == 'base64') {
