@@ -33,6 +33,13 @@ const textToBaseArr = (text, toBase) => text != null && text.length > 0 ? string
 const baseArrToText = (baseArr, fromBase) => baseArr.map(bcc => String.fromCharCode(convertFromBase(fromBase, bcc)));
 const collapseArrayIntoText = (arr, separator) => arr.reduce((a, c) => `${a}${separator}${c}`);
 const convert = (event) => {
+    try {
+        encodeAll(event.target.value);
+        decodeAll(event.target.value);
+    }
+    catch (e) {
+        console.log(e);
+    }
     document.querySelectorAll("span").forEach(span => span.hidden = true);
     let sourceText = document.getElementById("text").value;
     let checkedOption = document.querySelector("input[type='radio']:checked");
@@ -85,3 +92,29 @@ const copyToClipboard = (event) => {
         event.target.focus();
     }
 }
+
+var getChars = (str, separator = "") => str.split(separator);
+var getString = (charsArr, separator = "") => charsArr.join(separator);
+var charsToCodes = charsArr => charsArr.map(c => c.charCodeAt(0));
+var codesToChars = codesArr => codesArr.map(cc => String.fromCharCode(cc));
+var convertTo = (numArr, baseFrom, baseTo) => numArr.map(n => parseInt(n, baseFrom).toString(baseTo));
+var encodeStr = (str, to) => getString(convertTo(charsToCodes(getChars(str)), 10, to), " ").toUpperCase();
+var decodeStr = (str, from) => getString(codesToChars(convertTo(getChars(str, " "), from, 10)));
+var binEncode = str => encodeStr(str, 2);
+var binDecode = str => decodeStr(str, 2);
+var octEncode = str => encodeStr(str, 8);
+var octDecode = str => decodeStr(str, 8);
+var hexEncode = str => encodeStr(str, 16);
+var hexDecode = str => decodeStr(str, 16);
+var encodeAll = str => {
+    console.log("encoded:");
+    console.log(`binary: ${binEncode(str)}`);
+    console.log(`octed: ${octEncode(str)}`);
+    console.log(`hexadecimal: ${hexEncode(str)}`);
+};
+var decodeAll = str => {
+    console.log("decoded:");
+    console.log(`binary: ${binDecode(str)}`);
+    console.log(`octed: ${octDecode(str)}`);
+    console.log(`hexadecimal: ${hexDecode(str)}`);
+};
