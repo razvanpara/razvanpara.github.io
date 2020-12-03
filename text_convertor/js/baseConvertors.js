@@ -34,6 +34,7 @@ const baseArrToText = (baseArr, fromBase) => baseArr.map(bcc => String.fromCharC
 const collapseArrayIntoText = (arr, separator) => arr.reduce((a, c) => `${a}${separator}${c}`);
 const convert = (event) => {
     try {
+        console.clear();
         encodeAll(event.target.value);
         decodeAll(event.target.value);
     }
