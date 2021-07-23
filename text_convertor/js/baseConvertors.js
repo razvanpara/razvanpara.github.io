@@ -1,3 +1,105 @@
+const textToMorse = (text) => {
+    text = text.toUpperCase();
+    const unitSpace = ' ';
+    const letterSpace = Array(3).fill(unitSpace).join('');
+    const wordSpace = Array(7).fill(unitSpace).join('');;
+    const letterToMorse = {
+        'A': "._",
+        'B': "_...",
+        'C': "_._.",
+        'D': "_..",
+        'E': ".",
+        'F': ".._.",
+        'G': "__.",
+        'H': "....",
+        'I': "..",
+        'J': ".___",
+        'K': "_._",
+        'L': "._..",
+        'M': "__",
+        'N': "_.",
+        'O': "___",
+        'P': ".__.",
+        'Q': "__._",
+        'R': "._.",
+        'S': "...",
+        'T': "_",
+        'U': ".._",
+        'V': "..._",
+        'W': ".__",
+        'X': "_.._",
+        'Y': "_.__",
+        'Z': "__..",
+        '1': ".____",
+        '2': "..___",
+        '3': "...__",
+        '4': "...._",
+        '5': ".....",
+        '6': "_....",
+        '7': "__...",
+        '8': "___..",
+        '9': "____.",
+        '0': "_____",
+    };
+    const morseWords = text.split(' ')
+        .map(word => {
+            const morseLetters = word.split('')
+                .map(letter => letterToMorse[letter].split('').join(unitSpace));
+            return morseLetters.join(letterSpace);
+        })
+    return morseWords.join(wordSpace);
+};
+const morseToText = (morseText) => {
+    const unitSpace = ' ';
+    const letterSpace = Array(3).fill(unitSpace).join('');
+    const wordSpace = Array(7).fill(unitSpace).join('');;
+    const morseToLetter = {
+        "_____": "0",
+        ".____": "1",
+        "..___": "2",
+        "...__": "3",
+        "...._": "4",
+        ".....": "5",
+        "_....": "6",
+        "__...": "7",
+        "___..": "8",
+        "____.": "9",
+        "._": "A",
+        "_...": "B",
+        "_._.": "C",
+        "_..": "D",
+        ".": "E",
+        ".._.": "F",
+        "__.": "G",
+        "....": "H",
+        "..": "I",
+        ".___": "J",
+        "_._": "K",
+        "._..": "L",
+        "__": "M",
+        "_.": "N",
+        "___": "O",
+        ".__.": "P",
+        "__._": "Q",
+        "._.": "R",
+        "...": "S",
+        "_": "T",
+        ".._": "U",
+        "..._": "V",
+        ".__": "W",
+        "_.._": "X",
+        "_.__": "Y",
+        "__..": "Z"
+    };
+    const words = morseText.split(wordSpace)
+        .map(morseWord => {
+            const morseLetters = morseWord.split(letterSpace)
+                .map(morseLetter => morseToLetter[morseLetter.split(unitSpace).join('')]);
+            return morseLetters.join('');
+        })
+    return words.join(' ');
+};
+
 const aboveBase10digits = {
     10: 'A',
     11: 'B',
@@ -52,6 +154,13 @@ const convert = (event) => {
                 ? sourceText
                 : from == 99 ? btoa(sourceText)
                     : atob(sourceText);
+            return;
+        }
+        else if (from == 'morse' || to == 'morse') {
+            document.getElementById("textResult").value = from == to
+                ? sourceText
+                : from == 99 ? textToMorse(sourceText)
+                    : morseToText(sourceText);
             return;
         }
         let baseFrom = parseInt(from);
