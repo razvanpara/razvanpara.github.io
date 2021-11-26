@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./something.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <title>Cellular Automata Visualizer</title>
+
+</head>
+
+<body class="bg-secondary text-dark">
+    <div>
+        <div class="mt-3 mb-5">
+            <a href="./index.html" class="btn btn-sm btn-info">Back</a>
+        </div>
+        <div class="container-sm">
+            <div class="form-group mb-1">
+                <label for="rule">Rule: <span id="ruleLabel"></span></label>
+                <input class="form-range" type="range" min="1" max="255" step="1" name="rule" id="rule" value='110' />
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-sm btn-light me-1" onclick="modifyRule(-1)">
+                        <span class="fa-solid fa-angle-left"> </span>
+                    </button>
+                    <button class="btn btn-sm btn-light" onclick="modifyRule(1)">
+                        <span class="fa-solid fa-angle-right"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group mb-1">
+                <label for="rows">Rows:</label>
+                <input class="form-control" type="number" name="rows" id="rows" value='50' />
+            </div>
+            <div class="form-group mb-1">
+                <label for="cols">Columns:</label>
+                <input class="form-control" type="number" name="cols" id="cols" value='100' />
+            </div>
+            <div class="form-group mb-1">
+                <label for="randomState" class="me-3">Random starting state:</label>
+                <input class="form-check-input" type="checkbox" name="randomState" id="randomState" />
+            </div>
+            <!-- <div class="btn-group mb-1">
+                <button type="submit" class="btn btn-sm btn-primary" type="button" onclick="handleChange()"> Generate
+                </button>
+            </div> -->
+        </div>
+        <div class="container-fluid mw-100">
+            <pre class="border border-dark w-100" id="scriptOutput"></pre>
+        </div>
+        <script defer>
+            function updateOuput() {
+                const rule = document.getElementById("rule").value;
+                const rows = document.getElementById("rows").value;
+                const cols = document.getElementById("cols").value;
+                const random = document.getElementById("randomState").checked;
+                const board = runScript([rule, cols, random, rows]);
+                let boardText = board.map(row => row.replace(/ /g, "&nbsp;")).join("\n")
+                document.getElementById("scriptOutput").innerHTML = boardText;
+                // console.log(boardText);
+            };
+
+            function updateRuleLabel() {
+                const label = document.getElementById("ruleLabel");
+                const value = document.getElementById("rule").value;
+                label.innerText = value;
+            }
+
+            function modifyRule(amount) {
+                const rule = document.getElementById("rule");
+                rule.value = +rule.value + +amount;
+                handleChange();
+            }
+
+            function handleChange(event) {
+                updateRuleLabel();
+                updateOuput();
+            }
+
+            handleChange();
+            document.querySelectorAll("input").forEach(input => input.addEventListener("change", (ev) => handleChange(event)));
+        </script>
+</body>
+
+</html>
