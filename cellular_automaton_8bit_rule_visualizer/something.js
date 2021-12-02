@@ -13,18 +13,8 @@ function GetIndexes(index, boardSize) {
 }
 
 function GetRuleNumber(indexes, board) {
-    let ruleNo = 0;
-    for (let i = 0; i < indexes.length; i++) {
-        const boardValue = board[indexes[i]];
-        if (boardValue) {
-            let powerOfTwo = indexes.length - 1 - i;
-            let result = 1;
-            while (powerOfTwo-- > 0) {
-                result *= 2;
-            }
-            ruleNo += result;
-        }
-    }
+    const ruleBits = indexes.map(i => board[i] ? 1 : 0).join("");
+    const ruleNo = parseInt(ruleBits, 2);
     return ruleNo;
 }
 
