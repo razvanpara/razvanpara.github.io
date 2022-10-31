@@ -14,39 +14,55 @@
         }
 
         div {
-            border: 2px solid black;
+            /* border: 2px solid black;
             padding: 5px;
-            max-width: 75%;
+            max-width: 75%; */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            /* padding: 100px; */
+            border: 1px solid black;
+        }
+
+        .item {
+            flex: 1 1 auto;
+            padding: 100px;
+            border-left: 1px solid black;
         }
     </style>
 </head>
 
 <body>
-    <div>
-        <h1>Encoder:</h1>
-        <h2>Character set:</h2>
-        <input id="characterSet" />
-        <br />
-        <button id="randomize">Randomize</button>
-        <h2>Plain text:</h2>
-        <textarea id="plainText"></textarea>
-        <h2>Encrypted:</h2>
-        <textarea id="encodedText"></textarea>
-        <br />
-        <button id="clipboardCopy">Copy to clipboard</button>
-    </div>
-    <div>
-        <h1>Decoder:</h1>
-        <h2>To decode:</h2>
-        <textarea id="toDecodeText"></textarea>
-        <br>
-        <button id="clipboardPaste">Paste from clipboard</button>
-        <h2>Character set</h2>
-        <textarea id="decoderCharacterSet" disabled></textarea>
-        <h2>Encrypted text</h2>
-        <textarea id="decoderEncrypted" disabled></textarea>
-        <h2>Plain text</h2>
-        <textarea id="decoderPlain" disabled></textarea>
+    <div class="container">
+        <div class="item">
+            <h1>Encoder:</h1>
+            <h2>Character set:</h2>
+            <input id="characterSet" />
+            <br />
+            <button id="randomize">Randomize</button>
+            <h2>Plain text:</h2>
+            <textarea id="plainText"></textarea>
+            <h2>Encrypted:</h2>
+            <textarea id="encodedText"></textarea>
+            <br />
+            <button id="clipboardCopy">Copy to clipboard</button>
+        </div>
+        <div class="item">
+            <h1>Decoder:</h1>
+            <h2>To decode:</h2>
+            <textarea id="toDecodeText"></textarea>
+            <br>
+            <button id="clipboardPaste">Paste from clipboard</button>
+            <h2>Character set</h2>
+            <textarea id="decoderCharacterSet" disabled></textarea>
+            <h2>Encrypted text</h2>
+            <textarea id="decoderEncrypted" disabled></textarea>
+            <h2>Plain text</h2>
+            <textarea id="decoderPlain" disabled></textarea>
+        </div>
     </div>
 </body>
 
