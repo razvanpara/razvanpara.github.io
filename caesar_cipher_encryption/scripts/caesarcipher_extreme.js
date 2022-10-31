@@ -75,4 +75,6 @@ encodedText.addEventListener("input", (ev) => {
 randomizeBtn.addEventListener("click", (ev) => {
     const newVal = [...characterSet.value].map((c) => ({ c, r: Math.random() })).sort((a, b) => a.r - b.r).map(ob => ob.c).join("");
     characterSet.value = newVal;
+    plainText.dispatchEvent(new Event("input"))
+    encodedText.dispatchEvent(new Event("input"))
 });
