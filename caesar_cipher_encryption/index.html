@@ -12,18 +12,42 @@
         input {
             width: 50%;
         }
+
+        div {
+            border: 2px solid black;
+            padding: 5px;
+            max-width: 75%;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Character set:</h1>
-    <input id="characterSet" />
-    <br />
-    <button id="randomize">Randomize</button>
-    <h1>Plain text:</h1>
-    <textarea id="plainText"></textarea>
-    <h1>Encrypted:</h1>
-    <textarea id="encodedText"></textarea>
+    <div>
+        <h1>Encoder:</h1>
+        <h2>Character set:</h2>
+        <input id="characterSet" />
+        <br />
+        <button id="randomize">Randomize</button>
+        <h2>Plain text:</h2>
+        <textarea id="plainText"></textarea>
+        <h2>Encrypted:</h2>
+        <textarea id="encodedText"></textarea>
+        <br />
+        <button id="clipboardCopy">Copy to clipboard</button>
+    </div>
+    <div>
+        <h1>Decoder:</h1>
+        <h2>To decode:</h2>
+        <textarea id="toDecodeText"></textarea>
+        <br>
+        <button id="clipboardPaste">Paste from clipboard</button>
+        <h2>Character set</h2>
+        <textarea id="decoderCharacterSet" disabled></textarea>
+        <h2>Encrypted text</h2>
+        <textarea id="decoderEncrypted" disabled></textarea>
+        <h2>Plain text</h2>
+        <textarea id="decoderPlain" disabled></textarea>
+    </div>
 </body>
 
 </html>

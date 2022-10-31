@@ -58,6 +58,12 @@ const plainText = document.getElementById("plainText");
 const encodedText = document.getElementById("encodedText");
 const characterSet = document.getElementById("characterSet");
 const randomizeBtn = document.getElementById("randomize");
+const clipboardCopyBtn = document.getElementById("clipboardCopy");
+const clipboardPasteBtn = document.getElementById("clipboardPaste");
+const toDecodeText = document.getElementById("toDecodeText");
+const decoderPlain = document.getElementById("decoderPlain");
+const decoderCharacterSet = document.getElementById("decoderCharacterSet");
+const decoderEncrypted = document.getElementById("decoderEncrypted");
 
 
 characterSet.value = symbols.join("")
@@ -77,4 +83,24 @@ randomizeBtn.addEventListener("click", (ev) => {
     characterSet.value = newVal;
     plainText.dispatchEvent(new Event("input"))
     encodedText.dispatchEvent(new Event("input"))
+});
+
+clipboardCopyBtn.addEventListener("click", () => {
+    const characters = characterSet.value;
+    const encoded = encodedText.value;
+    navigator.clipboard.writeText(`${characters}\t${encoded}`);
+});
+clipboardPasteBtn.addEventListener("click", () => {
+    navigator.clipboard.readText()
+        .then(text => toDecodeText.value = text)
+        .then(_ => toDecodeText.dispatchEvent(new Event("input")));
+});
+
+toDecodeText.addEventListener("input", (ev) => {
+    const inputs = ev.target.value.split('\t');
+    if (inputs.length !== 2) return;
+    const [symbols, text] = inputs;
+    decoderCharacterSet.value = symbols;
+    decoderEncrypted.value = text;
+    decoderPlain.value = caesar_cipher_decode([...symbols], text);
 });
