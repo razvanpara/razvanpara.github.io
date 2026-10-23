@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewport Game - WASD Square</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: #38bdf8;
+        }
+
+        .controls-bar {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .stat-item {
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 0.35rem 0.85rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            color: #38bdf8;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .instructions {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        kbd {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            padding: 0.15rem 0.35rem;
+            font-family: monospace;
+            color: #e2e8f0;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            background: #1e293b;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .btn-speed {
+            width: 32px;
+            padding: 0.35rem 0;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        #viewport {
+            width: 800px;
+            height: 600px;
+            box-sizing: content-box;
+            background-color: #1e1b4b;
+            border: 3px solid #4f46e5;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+        }
+
+        #player {
+            width: 40px;
+            height: 40px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            position: absolute;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: left var(--anim-duration, 120ms) cubic-bezier(0.2, 0, 0, 1),
+                        top var(--anim-duration, 120ms) cubic-bezier(0.2, 0, 0, 1),
+                        background 150ms ease;
+            will-change: left, top;
+        }
+
+        #headArrow {
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 12px solid rgba(255, 255, 255, 0.95);
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+            transform-origin: center center;
+            transition: transform 120ms ease;
+        }
+
+        .segment {
+            width: 40px;
+            height: 40px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            position: absolute;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            transition: left var(--anim-duration, 120ms) cubic-bezier(0.2, 0, 0, 1),
+                        top var(--anim-duration, 120ms) cubic-bezier(0.2, 0, 0, 1),
+                        background 150ms ease;
+            will-change: left, top;
+        }
+
+        .no-transition {
+            transition: none !important;
+        }
+
+        #food {
+            width: 40px;
+            height: 40px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            position: absolute;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            z-index: 3;
+        }
+
+        #gameOverOverlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(4px);
+            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        #gameOverOverlay h2 {
+            font-size: 2.5rem;
+            color: #ef4444;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+
+        #finalScoreText {
+            color: #e2e8f0;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Viewport Game</h1>
+    
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-label">Score</span>
+            <span id="scoreVal" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Speed</span>
+            <span id="speedVal" class="stat-value">1</span>
+        </div>
+        <button id="speedDownBtn" class="btn btn-speed" title="Decrease speed (-)">-</button>
+        <button id="speedUpBtn" class="btn btn-speed" title="Increase speed (+)">+</button>
+    </div>
+
+    <div class="controls-bar">
+        <div class="instructions">Use <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> | <kbd>R</kbd> Restart | <kbd>Space</kbd> Auto-Run | <kbd>T</kbd> Teleport | <kbd>+</kbd>/<kbd>-</kbd> Speed</div>
+        <button id="autoBtn" class="btn">Auto Run: OFF</button>
+        <button id="teleportBtn" class="btn">Teleport: ON</button>
+    </div>
+
+    <div id="viewport">
+        <div id="player"><div id="headArrow"></div></div>
+        <div id="food"></div>
+        <div id="gameOverOverlay">
+            <h2>GAME OVER</h2>
+            <div id="finalScoreText">Your Score: 0</div>
+            <button id="restartBtn" class="btn" style="padding: 0.6rem 1.4rem; font-size: 1rem;">Play Again (R)</button>
+        </div>
+    </div>
+
+    <script>
+        const viewport = document.getElementById('viewport');
+        const player = document.getElementById('player');
+        const headArrow = document.getElementById('headArrow');
+        const foodEl = document.getElementById('food');
+        const autoBtn = document.getElementById('autoBtn');
+        const teleportBtn = document.getElementById('teleportBtn');
+        const scoreVal = document.getElementById('scoreVal');
+        const speedVal = document.getElementById('speedVal');
+        const speedDownBtn = document.getElementById('speedDownBtn');
+        const speedUpBtn = document.getElementById('speedUpBtn');
+        const gameOverOverlay = document.getElementById('gameOverOverlay');
+        const finalScoreText = document.getElementById('finalScoreText');
+        const restartBtn = document.getElementById('restartBtn');
+
+        const vpWidth = 800;
+        const vpHeight = 600;
+        const size = 40;
+
+        let wrapAround = true;
+        let isGameOver = false;
+        let score = 0;
+        let speed = 1; // Speed tier from 1 to 10
+        let autoRunInterval = null;
+
+        const colorPalette = [
+            'linear-gradient(135deg, #38bdf8, #0284c7)', // Sky Blue
+            'linear-gradient(135deg, #f43f5e, #be123c)', // Crimson
+            'linear-gradient(135deg, #10b981, #047857)', // Emerald
+            'linear-gradient(135deg, #8b5cf6, #6d28d9)', // Purple
+            'linear-gradient(135deg, #f59e0b, #d97706)', // Amber
+            'linear-gradient(135deg, #ec4899, #be185d)', // Pink
+            'linear-gradient(135deg, #84cc16, #4d7c0f)', // Lime
+            'linear-gradient(135deg, #f97316, #c2410c)', // Orange
+            'linear-gradient(135deg, #14b8a6, #0f766e)', // Teal
+            'linear-gradient(135deg, #a855f7, #7e22ce)', // Violet
+            'linear-gradient(135deg, #eab308, #a16207)', // Yellow
+            'linear-gradient(135deg, #06b6d4, #0e7490)', // Cyan
+            'linear-gradient(135deg, #e11d48, #9f1239)', // Rose
+            'linear-gradient(135deg, #6366f1, #4338ca)', // Indigo
+            'linear-gradient(135deg, #d946ef, #a21caf)'  // Fuchsia
+        ];
+
+        function getRandomColor(excludeColors = []) {
+            const available = colorPalette.filter(c => !excludeColors.includes(c));
+            if (available.length > 0) {
+                return available[Math.floor(Math.random() * available.length)];
+            }
+            const hue1 = Math.floor(Math.random() * 360);
+            const hue2 = (hue1 + 35) % 360;
+            return `linear-gradient(135deg, hsl(${hue1}, 85%, 55%), hsl(${hue2}, 85%, 45%))`;
+        }
+
+        function createInitialSnake() {
+            const headColor = getRandomColor();
+            const tailColor = getRandomColor([headColor]);
+            const startX = Math.floor((vpWidth / size) / 2) * size;
+            const startY = Math.floor((vpHeight / size) / 2) * size;
+
+            return [
+                { x: startX, y: startY, color: headColor },
+                { x: startX - size, y: startY, color: tailColor }
+            ];
+        }
+
+        let snake = createInitialSnake();
+        let currentDir = 'RIGHT';
+
+        let foodX = 0;
+        let foodY = 0;
+        let foodColor = '';
+        let foodActive = false;
+        let foodRespawnCountdown = 0;
+        let travelingFoodIndex = -1;
+
+        let segmentElements = [];
+
+        function getSpeedIntervalMs(sp) {
+            // Base speed interval at speed 1 is ~400ms (30% less speed than previous 300ms)
+            // Each speed increase scales by ~0.7 to increase speed proportionately
+            return Math.max(50, Math.round(400 * Math.pow(0.85, sp - 1)));
+        }
+
+        function updateSpeedDisplay() {
+            speedVal.innerText = speed;
+            const intervalMs = getSpeedIntervalMs(speed);
+            // Dynamic animation duration: 65% of move interval so it completes smoothly before next step
+            const animDuration = Math.round(intervalMs * 0.65);
+            document.documentElement.style.setProperty('--anim-duration', animDuration + 'ms');
+
+            if (autoRunInterval) {
+                clearInterval(autoRunInterval);
+                autoRunInterval = setInterval(() => {
+                    move(currentDir);
+                }, intervalMs);
+            }
+        }
+
+        function changeSpeed(delta) {
+            speed = Math.max(1, Math.min(10, speed + delta));
+            updateSpeedDisplay();
+        }
+
+        function updateScore(newScore) {
+            score = newScore;
+            scoreVal.innerText = score;
+        }
+
+        function initSegments() {
+            segmentElements.forEach(el => el.remove());
+            segmentElements = [];
+
+            for (let i = 1; i < snake.length; i++) {
+                const seg = document.createElement('div');
+                seg.className = 'segment';
+                seg.style.background = snake[i].color;
+                viewport.appendChild(seg);
+                segmentElements.push(seg);
+            }
+        }
+
+        function spawnFood() {
+            const cols = vpWidth / size;
+            const rows = vpHeight / size;
+
+            let valid = false;
+            let attempts = 0;
+            while (!valid && attempts < 200) {
+                foodX = Math.floor(Math.random() * cols) * size;
+                foodY = Math.floor(Math.random() * rows) * size;
+                valid = !snake.some(seg => seg.x === foodX && seg.y === foodY);
+                attempts++;
+            }
+
+            const currentColors = snake.map(s => s.color);
+            foodColor = getRandomColor(currentColors);
+            foodEl.style.background = foodColor;
+            foodEl.style.left = foodX + 'px';
+            foodEl.style.top = foodY + 'px';
+            foodEl.style.display = 'block';
+            foodActive = true;
+            foodRespawnCountdown = 0;
+        }
+
+        function triggerGameOver() {
+            isGameOver = true;
+            if (autoRunInterval) {
+                clearInterval(autoRunInterval);
+                autoRunInterval = null;
+                autoBtn.innerText = 'Auto Run: OFF';
+            }
+            finalScoreText.innerText = 'Your Score: ' + score;
+            gameOverOverlay.style.display = 'flex';
+        }
+
+        function move(dir) {
+            if (isGameOver) return;
+
+            let dx = 0;
+            let dy = 0;
+            if (dir === 'UP') dy = -size;
+            if (dir === 'DOWN') dy = size;
+            if (dir === 'LEFT') dx = -size;
+            if (dir === 'RIGHT') dx = size;
+
+            // Prevent direct 180° opposite movement
+            if (dir === 'UP' && currentDir === 'DOWN') return;
+            if (dir === 'DOWN' && currentDir === 'UP') return;
+            if (dir === 'LEFT' && currentDir === 'RIGHT') return;
+            if (dir === 'RIGHT' && currentDir === 'LEFT') return;
+
+            currentDir = dir;
+
+            let newHeadX = snake[0].x + dx;
+            let newHeadY = snake[0].y + dy;
+
+            // Boundary handling
+            if (wrapAround) {
+                if (newHeadX < 0) {
+                    newHeadX = vpWidth - size;
+                } else if (newHeadX > vpWidth - size) {
+                    newHeadX = 0;
+                }
+
+                if (newHeadY < 0) {
+                    newHeadY = vpHeight - size;
+                } else if (newHeadY > vpHeight - size) {
+                    newHeadY = 0;
+                }
+            } else {
+                if (newHeadX < 0 || newHeadX > vpWidth - size || newHeadY < 0 || newHeadY > vpHeight - size) {
+                    triggerGameOver();
+                    return;
+                }
+            }
+
+            // Self-collision check (excluding the tail segment that vacates on normal move)
+            const isFoodTile = (foodActive && newHeadX === foodX && newHeadY === foodY);
+            const checkLimit = isFoodTile ? snake.length : snake.length - 1;
+            for (let i = 1; i < checkLimit; i++) {
+                if (snake[i].x === newHeadX && snake[i].y === newHeadY) {
+                    triggerGameOver();
+                    return;
+                }
+            }
+
+            // Record previous positions before moving to detect wrap-around teleportation
+            const prevPositions = snake.map(s => ({ x: s.x, y: s.y }));
+
+            // Check if head reaches food
+            const collected = (foodActive && newHeadX === foodX && newHeadY === foodY);
+
+            if (collected) {
+                const oldHeadX = snake[0].x;
+                const oldHeadY = snake[0].y;
+
+                snake[0].x = newHeadX;
+                snake[0].y = newHeadY;
+
+                snake.splice(1, 0, { x: oldHeadX, y: oldHeadY, color: foodColor });
+
+                foodEl.style.display = 'none';
+                foodActive = false;
+                // Respawn exactly 2 moves after being eaten
+                foodRespawnCountdown = 2;
+                travelingFoodIndex = 1;
+
+                // Increase score
+                updateScore(score + 1);
+
+                // Speed increases automatically by 1 every 5 foods eaten
+                if (score % 5 === 0) {
+                    changeSpeed(1);
+                }
+
+                initSegments();
+            } else {
+                for (let i = snake.length - 1; i > 0; i--) {
+                    snake[i].x = snake[i - 1].x;
+                    snake[i].y = snake[i - 1].y;
+                }
+                snake[0].x = newHeadX;
+                snake[0].y = newHeadY;
+
+                // Handle food respawn 2 moves after being eaten
+                if (!foodActive && foodRespawnCountdown > 0) {
+                    foodRespawnCountdown--;
+                    if (foodRespawnCountdown === 0) {
+                        spawnFood();
+                    }
+                }
+
+                if (travelingFoodIndex !== -1) {
+                    const idx = travelingFoodIndex;
+                    const temp = snake[idx].color;
+                    snake[idx].color = snake[idx + 1].color;
+                    snake[idx + 1].color = temp;
+
+                    travelingFoodIndex++;
+
+                    if (travelingFoodIndex >= snake.length - 1) {
+                        travelingFoodIndex = -1;
+                    }
+                }
+            }
+
+            // Identify any segment that jumped across the screen (teleported)
+            const teleportedIndices = [];
+            for (let i = 0; i < snake.length; i++) {
+                const prev = prevPositions[i];
+                if (prev) {
+                    const dist = Math.abs(snake[i].x - prev.x) + Math.abs(snake[i].y - prev.y);
+                    if (dist > size * 1.5) {
+                        teleportedIndices.push(i);
+                    }
+                }
+            }
+
+            render(teleportedIndices);
+        }
+
+        function render(teleportedIndices = []) {
+            // Apply or remove no-transition class to prevent sliding across entire screen on wrap
+            if (teleportedIndices.includes(0)) {
+                player.classList.add('no-transition');
+            } else {
+                player.classList.remove('no-transition');
+            }
+
+            player.style.left = snake[0].x + 'px';
+            player.style.top = snake[0].y + 'px';
+            player.style.background = snake[0].color;
+
+            // Rotate head arrow towards direction of movement
+            let rotation = 0; // Default UP
+            if (currentDir === 'RIGHT') rotation = 90;
+            else if (currentDir === 'DOWN') rotation = 180;
+            else if (currentDir === 'LEFT') rotation = 270;
+            headArrow.style.transform = `rotate(${rotation}deg)`;
+
+            for (let i = 1; i < snake.length; i++) {
+                const segEl = segmentElements[i - 1];
+                if (segEl) {
+                    if (teleportedIndices.includes(i)) {
+                        segEl.classList.add('no-transition');
+                    } else {
+                        segEl.classList.remove('no-transition');
+                    }
+                    segEl.style.left = snake[i].x + 'px';
+                    segEl.style.top = snake[i].y + 'px';
+                    segEl.style.background = snake[i].color;
+                }
+            }
+        }
+
+        function resetGame() {
+            if (autoRunInterval) {
+                clearInterval(autoRunInterval);
+                autoRunInterval = null;
+                autoBtn.innerText = 'Auto Run: OFF';
+            }
+            isGameOver = false;
+            gameOverOverlay.style.display = 'none';
+            travelingFoodIndex = -1;
+            foodActive = false;
+            foodRespawnCountdown = 0;
+            updateScore(0);
+            speed = 1;
+            updateSpeedDisplay();
+            snake = createInitialSnake();
+            currentDir = 'RIGHT';
+            initSegments();
+            spawnFood();
+            render();
+        }
+
+        function toggleAuto() {
+            if (isGameOver) return;
+            if (autoRunInterval) {
+                clearInterval(autoRunInterval);
+                autoRunInterval = null;
+                autoBtn.innerText = 'Auto Run: OFF';
+            } else {
+                autoRunInterval = setInterval(() => {
+                    move(currentDir);
+                }, getSpeedIntervalMs(speed));
+                autoBtn.innerText = 'Auto Run: ON';
+            }
+        }
+
+        function toggleTeleport() {
+            wrapAround = !wrapAround;
+            teleportBtn.innerText = 'Teleport: ' + (wrapAround ? 'ON' : 'OFF');
+        }
+
+        autoBtn.addEventListener('click', toggleAuto);
+        teleportBtn.addEventListener('click', toggleTeleport);
+        speedDownBtn.addEventListener('click', () => changeSpeed(-1));
+        speedUpBtn.addEventListener('click', () => changeSpeed(1));
+        restartBtn.addEventListener('click', resetGame);
+
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            if (key === 'w' || key === 'arrowup') {
+                move('UP');
+                e.preventDefault();
+            } else if (key === 's' || key === 'arrowdown') {
+                move('DOWN');
+                e.preventDefault();
+            } else if (key === 'a' || key === 'arrowleft') {
+                move('LEFT');
+                e.preventDefault();
+            } else if (key === 'd' || key === 'arrowright') {
+                move('RIGHT');
+                e.preventDefault();
+            } else if (key === 'r') {
+                resetGame();
+                e.preventDefault();
+            } else if (key === 't') {
+                toggleTeleport();
+                e.preventDefault();
+            } else if (key === '+' || key === '=' || key === 'add') {
+                changeSpeed(1);
+                e.preventDefault();
+            } else if (key === '-' || key === '_' || key === 'subtract') {
+                changeSpeed(-1);
+                e.preventDefault();
+            } else if (key === ' ' || e.code === 'Space') {
+                toggleAuto();
+                e.preventDefault();
+            }
+        });
+
+        // Initialize game
+        updateSpeedDisplay();
+        initSegments();
+        spawnFood();
+        render();
+    </script>
+</body>
+</html>
