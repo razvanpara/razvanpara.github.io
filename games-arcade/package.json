@@ -1,0 +1,12 @@
+{
+  "name": "arcade-lab",
+  "version": "1.0.0",
+  "description": "A static launcher for a collection of browser arcade games",
+  "keywords": [
+    "arcade",
+    "games",
+    "static"
+  ],
+  "author": "",
+  "license": "MIT"
+}
