@@ -99,8 +99,6 @@
             box-shadow: 0 12px 30px rgba(0,0,0,.14);
             transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
         }
-        .game-card:nth-child(1) { grid-column: span 3; }
-        .game-card:nth-child(2) { grid-column: span 3; }
         .game-card:hover, .game-card:focus-visible {
             transform: translateY(-5px);
             border-color: rgba(var(--accent-rgb), .56);
@@ -113,6 +111,9 @@
         .bounce { --accent: #a78bfa; --accent-rgb: 167, 139, 250; }
         .obstacle { --accent: #67e8f9; --accent-rgb: 103, 232, 249; }
         .flappy { --accent: #ffe44d; --accent-rgb: 255, 228, 77; }
+        .tetris { --accent: #c084fc; --accent-rgb: 192, 132, 252; }
+        .matchswap { --accent: #34d399; --accent-rgb: 52, 211, 153; }
+        .bubbleburst { --accent: #38bdf8; --accent-rgb: 56, 189, 248; }
         .art {
             position: relative;
             display: grid;
@@ -193,13 +194,13 @@
         <section class="hero" aria-labelledby="page-title">
             <div class="eyebrow">The game room is open</div>
             <h1 id="page-title">Pick your<br><span>next game.</span></h1>
-            <p class="hero-copy">Six tiny arcade worlds. Dodge, bounce, shoot, or grab a snack. Choose your game and jump straight in.</p>
+            <p class="hero-copy">Nine tiny arcade worlds. Match, dodge, bounce, shoot, stack, or grab a snack. Choose your game and jump straight in.</p>
         </section>
 
         <section aria-labelledby="collection-title">
             <div class="collection-head">
                 <h2 id="collection-title">Choose your game</h2>
-                <span class="collection-count">01 — 06&nbsp; / &nbsp;ARCADE COLLECTION</span>
+                <span class="collection-count">01 — 09&nbsp; / &nbsp;ARCADE COLLECTION</span>
             </div>
 
             <div class="game-grid">
@@ -325,6 +326,53 @@
                         </svg>
                     </div>
                     <div class="card-info"><div class="card-text"><h3 class="card-title">Flappy Bird</h3><p class="card-description">Flap through the gaps, dodge the pipes, and beat your best score.</p></div><span class="play-mark" aria-hidden="true">↗</span></div>
+                </a>
+
+                <a class="game-card tetris" href="tetris/index.html">
+                    <div class="art">
+                        <svg viewBox="0 0 440 170" role="img" aria-label="Colorful tetromino blocks stacked in a grid">
+                            <g opacity=".23" stroke="#94a3b8" stroke-width="1"><path d="M115 22h210M115 52h210M115 82h210M115 112h210M115 142h210"/><path d="M145 16v132m30-132v132m30-132v132m30-132v132m30-132v132m30-132v132"/></g>
+                            <g stroke="#0b1220" stroke-width="2">
+                                <rect x="146" y="24" width="28" height="27" rx="5" fill="#38bdf8"/><rect x="176" y="24" width="28" height="27" rx="5" fill="#38bdf8"/><rect x="206" y="24" width="28" height="27" rx="5" fill="#38bdf8"/><rect x="236" y="24" width="28" height="27" rx="5" fill="#38bdf8"/>
+                                <rect x="176" y="54" width="28" height="27" rx="5" fill="#c084fc"/><rect x="206" y="54" width="28" height="27" rx="5" fill="#c084fc"/><rect x="236" y="54" width="28" height="27" rx="5" fill="#c084fc"/><rect x="206" y="84" width="28" height="27" rx="5" fill="#c084fc"/>
+                                <rect x="146" y="114" width="28" height="27" rx="5" fill="#34d399"/><rect x="176" y="114" width="28" height="27" rx="5" fill="#34d399"/><rect x="236" y="114" width="28" height="27" rx="5" fill="#fbbf24"/><rect x="266" y="114" width="28" height="27" rx="5" fill="#fbbf24"/>
+                            </g>
+                            <circle cx="105" cy="49" r="2" fill="#c084fc"/><circle cx="332" cy="101" r="2" fill="#38bdf8"/>
+                        </svg>
+                    </div>
+                    <div class="card-info"><div class="card-text"><h3 class="card-title">Tetris</h3><p class="card-description">Rotate, stack, and clear lines as the blocks keep falling.</p></div><span class="play-mark" aria-hidden="true">↗</span></div>
+                </a>
+
+                <a class="game-card matchswap" href="match-swap/index.html">
+                    <div class="art">
+                        <svg viewBox="0 0 440 170" role="img" aria-label="Colorful gems arranged in a match-three grid">
+                            <g opacity=".22" stroke="#94a3b8" stroke-width="1"><path d="M139 25h162M139 57h162M139 89h162M139 121h162"/><path d="M171 16v128m32-128v128m32-128v128m32-128v128"/></g>
+                            <circle cx="155" cy="41" r="13" fill="#fb7185"/><circle cx="187" cy="41" r="13" fill="#38bdf8"/><circle cx="219" cy="41" r="13" fill="#fbbf24"/><circle cx="251" cy="41" r="13" fill="#a78bfa"/>
+                            <circle cx="155" cy="73" r="13" fill="#34d399"/><circle cx="187" cy="73" r="13" fill="#fb923c"/><circle cx="219" cy="73" r="13" fill="#fb7185"/><circle cx="251" cy="73" r="13" fill="#38bdf8"/>
+                            <circle cx="155" cy="105" r="13" fill="#fbbf24"/><circle cx="187" cy="105" r="13" fill="#a78bfa"/><circle cx="219" cy="105" r="13" fill="#34d399"/><circle cx="251" cy="105" r="13" fill="#fb923c"/>
+                            <circle cx="155" cy="137" r="13" fill="#38bdf8"/><circle cx="187" cy="137" r="13" fill="#fb7185"/><circle cx="219" cy="137" r="13" fill="#a78bfa"/><circle cx="251" cy="137" r="13" fill="#fbbf24"/>
+                            <circle cx="326" cy="73" r="13" fill="#fb7185"/><circle cx="358" cy="73" r="13" fill="#fb7185"/><circle cx="390" cy="73" r="13" fill="#fb7185"/>
+                            <path d="M324 104h68" stroke="#34d399" stroke-width="2" stroke-dasharray="4 6" opacity=".75"/>
+                            <circle cx="326" cy="133" r="3" fill="#34d399"/><circle cx="358" cy="133" r="3" fill="#34d399"/><circle cx="390" cy="133" r="3" fill="#34d399"/>
+                        </svg>
+                    </div>
+                    <div class="card-info"><div class="card-text"><h3 class="card-title">Match / Swap</h3><p class="card-description">Line up colorful gems, spark cascades, and chase a new high score.</p></div><span class="play-mark" aria-hidden="true">↗</span></div>
+                </a>
+
+                <a class="game-card bubbleburst" href="bubble-burst/index.html">
+                    <div class="art">
+                        <svg viewBox="0 0 440 170" role="img" aria-label="Bright bubbles ready to pop">
+                            <g fill="none" stroke="#38bdf8" stroke-width="1" opacity=".2"><path d="M100 28h240M100 58h240M100 88h240M100 118h240M100 148h240"/><path d="M130 18v135m40-135v135m40-135v135m40-135v135m40-135v135m40-135v135"/></g>
+                            <circle cx="130" cy="58" r="19" fill="#38bdf8"/><circle cx="124" cy="51" r="5" fill="#fff" opacity=".75"/>
+                            <circle cx="190" cy="118" r="14" fill="#fb7185"/><circle cx="185" cy="113" r="4" fill="#fff" opacity=".75"/>
+                            <circle cx="220" cy="58" r="24" fill="#a78bfa"/><circle cx="212" cy="49" r="6" fill="#fff" opacity=".75"/>
+                            <circle cx="270" cy="88" r="17" fill="#34d399"/><circle cx="264" cy="82" r="5" fill="#fff" opacity=".75"/>
+                            <circle cx="320" cy="118" r="21" fill="#fbbf24"/><circle cx="313" cy="110" r="6" fill="#fff" opacity=".75"/>
+                            <circle cx="338" cy="43" r="13" fill="#fb923c"/><circle cx="334" cy="39" r="4" fill="#fff" opacity=".75"/>
+                            <path d="M160 41l5-8m-8 13-9 1m94-24 3-9m86 56 9-3m-119 66-3 9m76-96 6-6" stroke="#e0f2fe" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+                        </svg>
+                    </div>
+                    <div class="card-info"><div class="card-text"><h3 class="card-title">Bubble Burst</h3><p class="card-description">Tap every bubble before the clock runs down. How many rounds can you clear?</p></div><span class="play-mark" aria-hidden="true">↗</span></div>
                 </a>
             </div>
         </section>
